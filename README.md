@@ -1,5 +1,6 @@
-# video_save_boto3
-Video clip extraction and storage to AWS S3 buckets using boto3
+# video_utils
+
+## Video clip extraction and storage to AWS S3 buckets using boto3
 
 #### Configure user for AWS S3 access
 Create a credentials file, `~/.aws/credentials`, with the user's access key ID 
@@ -31,4 +32,8 @@ $ python
 ... 
   elasticbeanstalk-us-east-2-867324276890
 >>>
+```
+#### Run script
+```
+$ python save_extract.py --source /home/james/video/big_buck_bunny_720p_2mb.mp4 --dest_s3_bucket elasticbeanstalk-us-east-2-867324276890 --dest_s3_key bunny_clip.mp4 --start 2 --end 7
 ```
