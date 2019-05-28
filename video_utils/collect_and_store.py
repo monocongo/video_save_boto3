@@ -68,8 +68,10 @@ if __name__ == "__main__":
         print(f"\n\nMP4 file created: {temp_file}")
 
         number_of_files_to_collect -= 1
-        start = end + 1
-        end = start + seconds_per_clip
+        # start = end + 1
+        # end = start + seconds_per_clip
+        start += seconds_per_clip
+        end += seconds_per_clip
 
         # store the clip to the S3 bucket using the name
         s3_client = boto3.client("s3")
