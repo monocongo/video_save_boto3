@@ -10,7 +10,8 @@ import ffmpeg
 def collect_and_store(rtsp_url: str,
                       start_seconds: int,
                       duration_seconds: int,
-                      s3_bucket: str) -> int:
+                      s3_bucket: str,
+                      s3_prefix: str=None) -> int:
 
     # build URL with start and end times
     # NOTE URL is for Uniview RTSP, add options for other camera types
@@ -35,7 +36,7 @@ def collect_and_store(rtsp_url: str,
 
     # store the clip to the S3 bucket using the name
     s3_client = boto3.client("s3")
-    s3_client.upload_file(temp_file, s3_bucket, temp_file)
+    s3_client.upload_file(temp_file, s3_bucket, s3_prefix + temp_file)
     os.remove(temp_file)
 
     print(f"\n\nMP4 file stored to S3: {temp_file}")
@@ -46,7 +47,7 @@ if __name__ == "__main__":
 
     # USAGE
     # $ python collect_and_store.py --rtsp rtsp://user:pass1@71.85.125.110:554 \
-    #       --s3_bucket elasticbeanstalk-us-east-2-867324276890 \
+    #       --s3_bucket scw.james.adams \
     #       --duration 30 --count 10
 
     # construct the argument parser and parse the arguments
@@ -67,6 +68,10 @@ if __name__ == "__main__":
                              required=True,
                              type=str,
                              help="Destination S3 bucket")
+    args_parser.add_argument("--s3_prefix",
+                             type=str,
+                             help="Key prefix of the file that will be "
+                                  "stored in the S3 bucket")
     args = vars(args_parser.parse_args())
 
     # sanity check for some of the arguments
@@ -79,7 +84,8 @@ if __name__ == "__main__":
 
     while number_of_files_to_collect > 0:
 
-        collect_and_store(args["rtsp"], start, args["duration"], args["s3_bucket"])
+        collect_and_store(args["rtsp"], start, args["duration"],
+                          args["s3_bucket"], args["s3_prefix"])
 
         number_of_files_to_collect -= 1
         start += args["duration"]
