@@ -11,7 +11,16 @@ def collect_and_store(rtsp_url: str,
                       start_seconds: int,
                       duration_seconds: int,
                       s3_bucket: str,
-                      s3_prefix: str=None) -> int:
+                      s3_prefix: str=None) -> str:
+    """
+
+    :param rtsp_url:
+    :param start_seconds:
+    :param duration_seconds:
+    :param s3_bucket:
+    :param s3_prefix:
+    :return: S3 URL to MP4 clip file
+    """
 
     # build URL with start and end times
     # NOTE URL is for Uniview RTSP, add options for other camera types
@@ -32,14 +41,12 @@ def collect_and_store(rtsp_url: str,
                            )
     ffmpeg.run(stream)
 
-    print(f"\n\nMP4 file created: {temp_file}")
-
     # store the clip to the S3 bucket using the name
     s3_client = boto3.client("s3")
     s3_client.upload_file(temp_file, s3_bucket, s3_prefix + temp_file)
     os.remove(temp_file)
 
-    print(f"\n\nMP4 file stored to S3: {temp_file}")
+    return f"s3://{s3_bucket}/{s3_prefix}{temp_file}"
 
 
 # ------------------------------------------------------------------------------
