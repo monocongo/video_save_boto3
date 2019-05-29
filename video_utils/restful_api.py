@@ -34,8 +34,7 @@ def record_and_store_clip():
                       request.args.get('bucket'),
                       request.args.get('prefix'))
 
-    s3_key = f"s3://{}/{}clip_b1559076593_e1559076613.mp4
-    return message
+    return s3_key
 
 
 # ------------------------------------------------------------------------------
