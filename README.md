@@ -28,7 +28,7 @@ $ conda config --set auto_activate_base false
 
 (Log out and back in to make the changes take effect)
 
-$ conda create -n mp4_to_s3 python=3.7 boto
+$ conda create -n mp4_to_s3 python=3.7 boto flask
 $ conda activate mp4_to_s3
 $ pip install ffmpeg-python
 ```
