@@ -46,6 +46,7 @@ def collect_and_store(rtsp_url: str,
     s3_client.upload_file(temp_file, s3_bucket, s3_prefix + temp_file)
     os.remove(temp_file)
 
+    # return the S3 URL for the created file
     return f"s3://{s3_bucket}/{s3_prefix}{temp_file}"
 
 
