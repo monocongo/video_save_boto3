@@ -37,6 +37,12 @@ def record_and_store_clip():
     return s3_key
 
 
+@app.route('/hello', methods=['GET'])
+def hello():
+
+    return "Hello!"
+
+
 # ------------------------------------------------------------------------------
 if __name__ == '__main__':
     app.run(debug=True)
