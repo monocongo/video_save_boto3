@@ -64,9 +64,11 @@ with `sudo` (this is a current requirement until we can work out how to configur
 security group rules to allow for inbound traffic to port 5000). For this to work
 we'll need to set the environment variables `PYTHONPATH`, `AWS_SHARED_CREDENTIALS_FILE`, 
 and `AWS_CONFIG_FILE`, as well as specifically referencing the path to the Python 
-interpreter of the conda environment:
+interpreter of the conda environment. We'll also run the command using `nohup` in 
+order to prevent the application from terminating if we log out of the shell, and 
+we redirect standard error and output to a log file:
 ```
-$ sudo -HE env PYTHONPATH=$PYTHONPATH AWS_SHARED_CREDENTIALS_FILE=/home/ubuntu/.aws/credentials AWS_CONFIG_FILE=/home/ubuntu/.aws/config /home/ubuntu/miniconda3/envs/mp4_to_s3/bin/python /home/ubuntu/git/video_utils/video_utils/restful_api.py --port 80
+$ nohup sudo -HE env PYTHONPATH=$PYTHONPATH AWS_SHARED_CREDENTIALS_FILE=/home/ubuntu/.aws/credentials AWS_CONFIG_FILE=/home/ubuntu/.aws/config /home/ubuntu/miniconda3/envs/mp4_to_s3/bin/python /home/ubuntu/git/video_utils/video_utils/restful_api.py --port 80  2>&1 >> ~/restful_api_mp4_to_s3.log &
 ```
 
 Now the application should be available via port 80. We can test from another 
