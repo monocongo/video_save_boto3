@@ -24,7 +24,7 @@ def collect_and_store(rtsp_url: str,
 
     # build URL with start and end times
     # NOTE URL is for Uniview RTSP, add options for other camera types
-    url = rtsp_url + f"/c1/b{start_seconds}/replay/"
+    url = rtsp_url + f"/b{start_seconds}/replay/"
 
     # file where we'll write clip data
     temp_file = f"clip_b{start_seconds}_e{(start_seconds + duration_seconds)}.mp4"
