@@ -4,9 +4,28 @@ import logging
 from flask import Flask, request
 
 from video_utils.collect_and_store import collect_and_store
+from video_utils.clip_and_store_events import extract_and_store_event_clips
 
 # initialize the Flask application
 app = Flask(__name__)
+
+
+# ------------------------------------------------------------------------------
+@app.route('/store_event_clips', methods=['GET'])
+def store_event_clips():
+
+    clip_urls = extract_and_store_event_clips(request.args.get('device'),
+                                              int(request.args.get('port')),
+                                              int(request.args.get('channel')),
+                                              int(request.args.get('stream')),
+                                              int(request.args.get('begin')),
+                                              int(request.args.get('end')),
+                                              request.args.get('user'),
+                                              request.args.get('password'),
+                                              request.args.get('bucket'),
+                                              request.args.get('prefix'))
+
+    return clip_urls
 
 
 # ------------------------------------------------------------------------------
