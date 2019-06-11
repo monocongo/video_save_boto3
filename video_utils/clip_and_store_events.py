@@ -60,24 +60,24 @@ if __name__ == "__main__":
                              help="Prefix for MP4 clips in S3 bucket")
     args = vars(args_parser.parse_args())
 
+    # build a Lightside API endpoint based on our various arguments
     endpoint = f"http://{args['device']}:{args['port']}/LAPI/V1.0/Channels/" \
         f"{args['channel']}/Media/Video/Streams/{args['stream']}/Records?" \
         f"Begin={args['begin']}&End={args['end']}"
 
+    # make the API request for event records
     response = requests.get(endpoint,
                             auth=HTTPDigestAuth(args["user"], args["password"]))
 
+    # get the response data into a list of event records
     content = response.content.decode('utf-8')
-
     json_data = json.loads(content)
-
     records = json_data["Response"]["Data"]["RecordInfos"]
+
+    # save each event as an MP4 clip on the specified S3 bucket
     for record in records:
 
         begin = record["Begin"]
         end = record["End"]
-
         rtsp = f"rtsp://{args['user']}:{args['password']}@{args['device']}:554/c1"
         collect_and_store(rtsp, begin, (end - begin + 1), args["s3_bucket"], args["s3_prefix"])
-
-    pass
